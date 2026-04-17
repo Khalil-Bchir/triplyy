@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Triply</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --sand:#F7F3ED;
+    --ink:#1A1612;
+    --muted:#7A7168;
+    --accent:#D85A30;
+    --accent-light:#FAECE7;
+    --teal:#0F6E56;
+    --teal-light:#E1F5EE;
+    --card:#FFFFFF;
+    --border:#E8E2D9;
+    --radius:14px;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--sand);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2.5rem;position:sticky;top:0;z-index:100;background:rgba(247,243,237,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:var(--ink);letter-spacing:-0.5px}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;align-items:center;gap:2rem}
+  .nav-links a{font-size:.9rem;color:var(--muted);text-decoration:none;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .btn-nav{background:var(--ink);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:opacity .2s}
+  .btn-nav:hover{opacity:.85}
+
+  /* HERO */
+  .hero{max-width:900px;margin:0 auto;padding:5rem 2rem 3rem;text-align:center}
+  .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--teal-light);color:var(--teal);font-size:.8rem;font-weight:500;padding:.35rem .9rem;border-radius:99px;margin-bottom:1.75rem;letter-spacing:.02em}
+  .hero-badge::before{content:'';display:inline-block;width:6px;height:6px;background:var(--teal);border-radius:50%}
+  h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.4rem,6vw,4rem);line-height:1.1;letter-spacing:-1.5px;color:var(--ink);margin-bottom:1.25rem}
+  h1 em{font-style:normal;color:var(--accent)}
+  .hero-sub{font-size:1.1rem;color:var(--muted);max-width:540px;margin:0 auto 2.5rem;font-weight:300;line-height:1.7}
+  .hero-cta{display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+  .btn-primary{background:var(--accent);color:#fff;border:none;padding:.8rem 2rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;transition:transform .15s,opacity .2s;letter-spacing:-.01em}
+  .btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+  .btn-secondary{background:transparent;color:var(--ink);border:1.5px solid var(--border);padding:.8rem 1.75rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;transition:border-color .2s,background .2s}
+  .btn-secondary:hover{border-color:var(--ink);background:rgba(26,22,18,.04)}
+  .hero-note{font-size:.8rem;color:var(--muted);margin-top:1rem}
+
+  /* MARQUEE */
+  .marquee-wrap{margin:3rem 0;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.75rem 0;background:rgba(255,255,255,.5)}
+  .marquee-track{display:flex;gap:3rem;animation:marquee 20s linear infinite;white-space:nowrap}
+  .marquee-item{font-size:.85rem;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+  .marquee-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;flex-shrink:0}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* HOW IT WORKS */
+  section{padding:4rem 2rem}
+  .section-label{font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+  h2{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:-.8px;color:var(--ink);margin-bottom:1rem;line-height:1.15}
+  .section-sub{color:var(--muted);font-size:1rem;max-width:480px;line-height:1.7;margin-bottom:2.5rem}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;max-width:900px;margin:0 auto}
+  .step-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;position:relative}
+  .step-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--border);line-height:1;margin-bottom:.75rem}
+  .step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:.4rem}
+  .step-desc{font-size:.88rem;color:var(--muted);line-height:1.6}
+
+  /* FORM PREVIEW */
+  .form-section{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+  @media(max-width:680px){.form-section{grid-template-columns:1fr}}
+  .form-preview{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem}
+  .form-preview h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--ink);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+  .field{margin-bottom:1rem}
+  .field label{display:block;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;letter-spacing:.02em;text-transform:uppercase}
+  .field input,.field select{width:100%;background:var(--sand);border:1px solid var(--border);border-radius:8px;padding:.55rem .85rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);outline:none}
+  .field input:focus,.field select:focus{border-color:var(--accent)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  .form-submit{width:100%;margin-top:.5rem;padding:.75rem;background:var(--accent);color:#fff;border:none;border-radius:9px;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:-.02em}
+  .form-copy h3{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1.2;margin-bottom:1rem}
+  .form-copy p{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+  .form-feat{display:flex;align-items:flex-start;gap:.65rem;margin-bottom:.75rem}
+  .feat-icon{width:20px;height:20px;background:var(--teal-light);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .feat-icon svg{width:11px;height:11px;stroke:var(--teal);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .form-feat p{font-size:.88rem;color:var(--muted);line-height:1.5}
+
+  /* PRICING */
+  .pricing-wrap{max-width:860px;margin:0 auto}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+  @media(max-width:700px){.pricing-grid{grid-template-columns:1fr}}
+  .plan-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;position:relative}
+  .plan-card.featured{border:2px solid var(--accent);background:var(--accent-light)}
+  .plan-badge{font-size:.72rem;font-weight:600;color:var(--accent);background:#fff;border:1px solid var(--accent);padding:.2rem .65rem;border-radius:99px;position:absolute;top:1.25rem;right:1.25rem;letter-spacing:.04em}
+  .plan-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:.75rem}
+  .plan-price{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--ink);letter-spacing:-1px;line-height:1}
+  .plan-price span{font-size:.9rem;font-weight:400;color:var(--muted)}
+  .plan-desc{font-size:.82rem;color:var(--muted);margin:.6rem 0 1.25rem;line-height:1.55}
+  .plan-divider{border:none;border-top:1px solid var(--border);margin-bottom:1.25rem}
+  .plan-feature{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem;font-size:.83rem;color:var(--muted)}
+  .plan-feature::before{content:'';width:5px;height:5px;background:var(--teal);border-radius:50%;flex-shrink:0}
+  .plan-feature.off{opacity:.4}
+  .plan-feature.off::before{background:var(--muted)}
+  .plan-btn{width:100%;margin-top:1.25rem;padding:.65rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;border:1.5px solid var(--ink);background:transparent;color:var(--ink);transition:all .2s}
+  .plan-btn:hover{background:var(--ink);color:#fff}
+  .plan-card.featured .plan-btn{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .plan-card.featured .plan-btn:hover{opacity:.88}
+
+  /* EMAIL PREVIEW */
+  .email-wrap{max-width:580px;margin:0 auto}
+  .email-mock{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  .email-topbar{background:#F0EBE3;padding:.6rem 1rem;font-size:.78rem;color:var(--muted);display:flex;gap:1.5rem;border-bottom:1px solid var(--border)}
+  .email-body{padding:1.5rem}
+  .email-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+  .email-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--ink)}
+  .email-logo span{color:var(--accent)}
+  .email-meta{font-size:.75rem;color:var(--muted)}
+  .email-headline{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--ink);margin-bottom:.3rem}
+  .email-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.25rem}
+  .deal-row{display:flex;align-items:flex-start;gap:.85rem;padding:.85rem;background:var(--sand);border-radius:9px;margin-bottom:.65rem}
+  .deal-icon{width:38px;height:38px;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+  .deal-name{font-size:.88rem;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:.2rem}
+  .deal-meta{font-size:.75rem;color:var(--muted)}
+  .deal-price{margin-left:auto;text-align:right;flex-shrink:0}
+  .deal-amount{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;color:var(--ink)}
+  .deal-per{font-size:.72rem;color:var(--muted)}
+  .ai-tag{display:inline-block;background:var(--teal-light);color:var(--teal);font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:4px;margin-bottom:.25rem}
+  .email-footer{padding-top:1rem;border-top:1px solid var(--border);text-align:center;font-size:.74rem;color:var(--muted)}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;gap:1rem}
+  .footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--ink)}
+  .footer-logo span{color:var(--accent)}
+  footer p{font-size:.82rem;color:var(--muted)}
+
+  /* SECTION CENTERING */
+  .center-section{text-align:center}
+  .center-section .section-sub{margin-left:auto;margin-right:auto}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Triply<span>.</span></div>
+  <div class="nav-links">
+    <a href="#">How it works</a>
+    <a href="#">Pricing</a>
+    <a href="#">Sample digest</a>
+    <button class="btn-nav">Get started free</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Travel smarter on a backpacker budget</div>
+  <h1>The best hostel &amp; flight deals,<br/>sent straight to your <em>inbox.</em></h1>
+  <p class="hero-sub">Tell us where you're going and when. We scan hundreds of deals and send you only what fits your budget — weekly, curated, no noise.</p>
+  <div class="hero-cta">
+    <button class="btn-primary">Get your first digest free</button>
+    <button class="btn-secondary">See a sample email</button>
+  </div>
+  <p class="hero-note">No credit card required &middot; Free sample on signup</p>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>Istanbul from $18/night</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bangkok hostels under $12</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Lisbon flights from €89</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bali budget hotels $22/night</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Prague hostels from $14</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Mexico City deals this week</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Istanbul from $18/night</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bangkok hostels under $12</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Lisbon flights from €89</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bali budget hotels $22/night</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Prague hostels from $14</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Mexico City deals this week</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section style="text-align:center">
+  <div class="section-label">How it works</div>
+  <h2>Three steps to your next adventure</h2>
+  <p class="section-sub" style="margin:0 auto 2.5rem">No accounts to manage, no endless browsing. Just deals that match your trip.</p>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">Fill your trip form</div>
+      <p class="step-desc">Destination, dates, budget, hostel or hotel. Takes under two minutes.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">We scan the deals</div>
+      <p class="step-desc">We search flights, hostels, and budget hotels across multiple sources filtered to your exact window.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title">Digest lands in your inbox</div>
+      <p class="step-desc">Weekly email with the top 8-10 deals ranked by value. Pro users get AI-ranked picks with explanations.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-title">Book directly</div>
+      <p class="step-desc">Every deal links straight to the source. No middleman, no hidden fees from us.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORM PREVIEW -->
+<section>
+  <div class="form-section">
+    <div class="form-preview">
+      <h3>Plan your trip</h3>
+      <div class="field">
+        <label>Where are you going?</label>
+        <input type="text" placeholder="Istanbul, Turkey" />
+      </div>
+      <div class="field">
+        <label>Flying from</label>
+        <input type="text" placeholder="Tunis, Tunisia" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Departure</label>
+          <input type="text" placeholder="Oct 10, 2026" />
+        </div>
+        <div class="field">
+          <label>Return</label>
+          <input type="text" placeholder="Oct 20, 2026" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Budget / night</label>
+          <input type="text" placeholder="$30 USD" />
+        </div>
+        <div class="field">
+          <label>Stay type</label>
+          <select><option>Hostel or hotel</option><option>Hostel only</option><option>Hotel only</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Your email</label>
+        <input type="email" placeholder="you@email.com" />
+      </div>
+      <button class="form-submit">Send me the deals &rarr;</button>
+    </div>
+    <div class="form-copy">
+      <h3>Simple form.<br/>Serious deals.</h3>
+      <p>We only ask what we actually need. Your trip profile is what drives the engine — the more accurate you are, the sharper the deals.</p>
+      <div class="form-feat">
+        <div class="feat-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <p>No account needed for the free sample digest</p>
+      </div>
+      <div class="form-feat">
+        <div class="feat-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <p>Deals updated and re-fetched every week</p>
+      </div>
+      <div class="form-feat">
+        <div class="feat-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <p>Pro plan adds AI reasoning on why each deal fits you</p>
+      </div>
+      <div class="form-feat">
+        <div class="feat-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <p>Manage multiple trips from one dashboard</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL PREVIEW -->
+<section class="center-section" style="background:rgba(255,255,255,.6);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-label">Sample digest</div>
+  <h2>What lands in your inbox</h2>
+  <p class="section-sub">Clean, scannable, direct links. No filler.</p>
+  <div class="email-wrap">
+    <div class="email-mock">
+      <div class="email-topbar">
+        <span>From: deals@triply.app</span>
+        <span>Subject: Your Istanbul deals — week of Oct 6</span>
+      </div>
+      <div class="email-body">
+        <div class="email-header">
+          <div class="email-logo">Triply<span>.</span></div>
+          <div class="email-meta">Istanbul &middot; Oct 10–20 &middot; $30/night</div>
+        </div>
+        <div class="email-headline">Your deals this week</div>
+        <p class="email-sub">8 picks, filtered for solo backpackers under $30/night in Istanbul.</p>
+
+        <div class="deal-row">
+          <div class="deal-icon">🏨</div>
+          <div style="flex:1;min-width:0">
+            <div class="ai-tag">AI pick</div>
+            <div class="deal-name">World House Hostel, Sultanahmet</div>
+            <div class="deal-meta">⭐ 4.7 &middot; Mixed dorm &middot; 200m from Hagia Sophia &middot; Free breakfast</div>
+          </div>
+          <div class="deal-price">
+            <div class="deal-amount">$19</div>
+            <div class="deal-per">/night</div>
+          </div>
+        </div>
+
+        <div class="deal-row">
+          <div class="deal-icon">✈️</div>
+          <div style="flex:1;min-width:0">
+            <div class="deal-name">Turkish Airlines — TUN → IST direct</div>
+            <div class="deal-meta">Oct 10 &middot; 3h 15m &middot; 1 stop return</div>
+          </div>
+          <div class="deal-price">
+            <div class="deal-amount">$210</div>
+            <div class="deal-per">roundtrip</div>
+          </div>
+        </div>
+
+        <div class="deal-row">
+          <div class="deal-icon">🏩</div>
+          <div style="flex:1;min-width:0">
+            <div class="deal-name">Chambers of the Boheme Hotel</div>
+            <div class="deal-meta">⭐ 4.5 &middot; Private room &middot; Taksim area &middot; Rooftop terrace</div>
+          </div>
+          <div class="deal-price">
+            <div class="deal-amount">$28</div>
+            <div class="deal-per">/night</div>
+          </div>
+        </div>
+
+        <div class="email-footer">
+          You're receiving this because you set up a trip to Istanbul &middot; <a href="#" style="color:var(--accent);text-decoration:none">Manage trips</a> &middot; <a href="#" style="color:var(--muted);text-decoration:none">Unsubscribe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="center-section">
+  <div class="section-label">Pricing</div>
+  <h2>Start free. Upgrade when it pays off.</h2>
+  <p class="section-sub">Every plan sends real deals. Pro adds the AI layer that does the thinking for you.</p>
+  <div class="pricing-wrap">
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0 <span>forever</span></div>
+        <p class="plan-desc">One sample digest to see if we're worth your inbox.</p>
+        <hr class="plan-divider"/>
+        <div class="plan-feature">One-time sample email</div>
+        <div class="plan-feature">Up to 5 deals per digest</div>
+        <div class="plan-feature off">Dashboard access</div>
+        <div class="plan-feature off">Weekly recurring digests</div>
+        <div class="plan-feature off">AI recommendations</div>
+        <button class="plan-btn">Get free sample</button>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name">Basic</div>
+        <div class="plan-price">$9 <span>/month</span></div>
+        <p class="plan-desc">Weekly deals digest for every trip you're planning.</p>
+        <hr class="plan-divider"/>
+        <div class="plan-feature">Unlimited trips</div>
+        <div class="plan-feature">8–10 deals per digest, weekly</div>
+        <div class="plan-feature">Dashboard to manage trips</div>
+        <div class="plan-feature">Flights + hotels + hostels</div>
+        <div class="plan-feature off">AI-ranked recommendations</div>
+        <button class="plan-btn">Start Basic</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$24 <span>/month</span></div>
+        <p class="plan-desc">Everything in Basic, plus AI that reasons about your travel style.</p>
+        <hr class="plan-divider"/>
+        <div class="plan-feature">Everything in Basic</div>
+        <div class="plan-feature">AI-ranked deals with reasoning</div>
+        <div class="plan-feature">On-demand digest anytime</div>
+        <div class="plan-feature">Multi-trip AI comparisons</div>
+        <div class="plan-feature">Priority deal refresh</div>
+        <button class="plan-btn">Start Pro</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Triply<span>.</span></div>
+  <p>Built for backpackers who hate overpaying.</p>
+  <p style="font-size:.78rem;color:var(--muted)">&copy; 2026 Triply. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+
+
+## Apps Web (Next.js 16 + Tailwind v4) rules
+
+These rules apply to `apps/web` only.
+
+### Current stack and constraints
+- **Framework**: Next.js 16 App Router (`app/`), React 19, TypeScript.
+- **Styling**: Tailwind CSS v4, `tailwind-merge`, `clsx`, `class-variance-authority`.
+- **UI primitives**: Radix UI, `lucide-react`, `next-themes`, `sonner`.
+- **Forms and validation**: `react-hook-form`, `zod`.
+- **State**: `zustand` (use when component state becomes cross-page or multi-component).
+- **Tooling**: ESLint (`eslint-config-next`) and Prettier (do not mention Biome or DaisyUI in guidance unless the repo adds them).
+
+### UX is the top priority
+- **Clarity beats cleverness**: prefer obvious labels and predictable layout over novel UI.
+- **Minimize friction**: reduce steps, avoid surprise navigation, keep primary actions visible.
+- **Fast feels fast**: keep above-the-fold lightweight, avoid heavy client JS on public pages.
+- **Accessible by default**: keyboard support, visible focus, correct semantics, sufficient contrast.
+
+### Website content roles and expectations
+When producing website copy (hero, pricing, FAQs, upgrade, onboarding, landing pages), adopt these roles at the same time:
+- **UX writer**: make each sentence help the user decide or do the next step.
+- **Conversion copywriter**: highlight outcomes, reduce anxiety, make CTAs specific.
+- **Product marketer**: communicate differentiation with concrete details, not generic claims.
+- **Editor**: remove fluff, shorten sentences, and keep terminology consistent.
+
+### Website copy rules (strict)
+- **Never use em dashes**: do not use em dashes in headings, body text, or UI labels. Use a period, parentheses, or a simple hyphen `-` only where appropriate.
+- **No generic filler**: avoid phrases like "seamless", "effortless", "next-level", "powerful", "best-in-class", "unlock", "revolutionary" unless backed by a specific, verifiable detail.
+- **Be concrete**: name the feature, the outcome, and the user. Prefer "Track trips, budgets, and bookings in one place" over "Manage everything in one place".
+- **Write for scanning**: short paragraphs, meaningful headings, bullet points with parallel structure.
+- **CTAs must describe the result**: prefer "Create your first itinerary" over "Get started".
+- **Consistency**: keep capitalization, terminology, and plan names identical across pages and components.
+- **Error and empty states**: always explain what happened, why it matters, and what to do next.
+
+### Project structure guidance (match repo)
+- **Routes**: place pages in `app/` including route groups like `app/(public)/...`.
+- **Public marketing content**: keep page shells thin and delegate content to `features/site/components/...` when appropriate.
+- **Shared UI**: use `components/` for reusable building blocks (avoid duplicating UI patterns across pages).
+
+### Next.js App Router rules
+- **Server first**: default to Server Components. Add `"use client"` only when needed for hooks, interactivity, or browser-only APIs.
+- **Data fetching**: use `fetch` in Server Components, Route Handlers, or Server Actions as appropriate. Do not use `getServerSideProps`, `getStaticProps`, or `getStaticPaths` in App Router code.
+- **Routing**: use flat, descriptive routes. Validate and sanitize any route params used in requests.
+- **Metadata and SEO**: use App Router metadata APIs for titles, descriptions, and open graph where applicable.
+- **Images**: use `next/image` with correct `sizes` and `priority` for above-the-fold images.
+
+### TypeScript rules
+- **Avoid `any`**: prefer `unknown` plus runtime validation (often with `zod`).
+- **Explicit boundaries**: type function inputs and outputs at module boundaries (helpers, hooks, actions).
+- **Types vs interfaces**: use either consistently within a module; prefer `type` for unions and `interface` for extendable object shapes.
+
+### Tailwind rules
+- **Prefer composition**: extract repeated class sets into variants via `class-variance-authority` when it reduces duplication.
+- **Do not over-abstract**: keep one-off styling inline when the component is single-use.
+- **Keep custom CSS rare**: only add to `app/globals.css` for truly global styles or CSS variables.
+
+### Component quality checklist
+- **Loading states**: skeletons or placeholders for async UI where a delay is visible.
+- **Empty states**: helpful guidance and a clear next action.
+- **Error states**: actionable message and recovery path (retry, edit input, contact support).
+- **Motion**: subtle transitions only, respect reduced motion preferences.

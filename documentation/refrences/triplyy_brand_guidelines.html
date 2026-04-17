@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Triplyy — Brand Guidelines v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sand:#F7F3ED;--ink:#1A1612;--muted:#7A7168;--accent:#D85A30;
+  --accent-light:#FAECE7;--teal:#0F6E56;--teal-light:#E1F5EE;
+  --card:#FFFFFF;--border:#E8E2D9;--text-secondary:#7A7168;
+}
+body{background:var(--sand);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6}
+.brand-doc{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem}
+.doc-version{display:inline-block;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,.06);color:var(--muted);padding:.25rem .75rem;border-radius:99px;margin-bottom:.75rem}
+.doc-title{font-family:'Syne',sans-serif;font-weight:800;font-size:2.4rem;letter-spacing:-1.5px;line-height:1.1;margin-bottom:.4rem}
+.doc-title span{color:var(--accent)}
+.doc-subtitle{font-size:.9rem;color:var(--muted);margin-bottom:3rem;padding-bottom:2rem;border-bottom:0.5px solid var(--border)}
+.section{margin-bottom:3.5rem}
+.section-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:0.5px solid var(--border)}
+.section-num{font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:var(--accent);letter-spacing:.04em}
+.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-.3px}
+.subsection-label{font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.85rem;margin-top:1.75rem}
+.logo-showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.logo-box{border:0.5px solid var(--border);border-radius:12px;padding:2rem 1.25rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;background:var(--card)}
+.logo-box.dark-bg{background:#1A1612;border-color:transparent}
+.logo-box.accent-bg{background:var(--accent);border-color:transparent}
+.logo-mark{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;letter-spacing:-1px;line-height:1;color:var(--ink)}
+.logo-mark .dot{color:var(--accent)}
+.logo-mark.on-dark{color:#F7F3ED}.logo-mark.on-dark .dot{color:#F0997B}
+.logo-mark.on-accent{color:#fff}.logo-mark.on-accent .dot{color:rgba(255,255,255,.6)}
+.logo-caption{font-size:.72rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.logo-caption.light{color:rgba(247,243,237,.5)}
+.logo-icon-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.icon-box{border:0.5px solid var(--border);border-radius:12px;padding:1.5rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.65rem;background:var(--card)}
+.icon-mark{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem}
+.icon-caption{font-size:.68rem;color:var(--muted);text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.do-box{background:var(--teal-light);border:0.5px solid #5DCAA5;color:#085041;border-radius:10px;padding:1rem 1.25rem;font-size:.85rem;line-height:1.6}
+.dont-box{background:var(--accent-light);border:0.5px solid #F0997B;color:#712B13;border-radius:10px;padding:1rem 1.25rem;font-size:.85rem;line-height:1.6}
+.do-box strong,.dont-box strong{font-weight:500;display:block;margin-bottom:.4rem;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.do-box ul,.dont-box ul{padding-left:1rem}
+.do-box li,.dont-box li{margin-bottom:.25rem}
+.palette-option{border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card);margin-bottom:1.5rem}
+.palette-header{padding:1rem 1.25rem;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.palette-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem}
+.palette-tag{font-size:.68rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .65rem;border-radius:99px}
+.tag-current{background:var(--teal-light);color:#085041}
+.tag-alt{background:rgba(0,0,0,.06);color:var(--muted)}
+.palette-swatches{display:flex}
+.swatch{flex:1;height:64px;display:flex;align-items:flex-end;padding:6px 8px}
+.swatch-label{font-size:.62rem;font-weight:500;opacity:.75;letter-spacing:.03em}
+.palette-tokens{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;padding:1rem 1.25rem;border-top:0.5px solid var(--border)}
+.token-row{display:flex;align-items:center;gap:.6rem}
+.token-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.token-info{font-size:.75rem;color:var(--muted);line-height:1.3}
+.token-name{font-weight:500;color:var(--ink);display:block}
+.info-box{background:rgba(0,0,0,.04);border-radius:10px;padding:1rem 1.25rem;font-size:.83rem;color:var(--muted);line-height:1.65;border-left:3px solid var(--accent);margin-top:1rem}
+.info-box strong{color:var(--ink);font-weight:500}
+.type-specimen{border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card);margin-bottom:1rem}
+.type-row{padding:1.25rem;border-bottom:0.5px solid var(--border);display:flex;align-items:baseline;gap:1.5rem}
+.type-row:last-child{border-bottom:none}
+.type-meta{width:130px;flex-shrink:0}
+.type-meta-name{font-size:.72rem;font-weight:500;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:.2rem}
+.type-meta-spec{font-size:.7rem;color:var(--muted);font-style:italic}
+.type-sample{flex:1}
+.spacing-grid{display:flex;flex-direction:column;gap:.5rem}
+.space-row{display:flex;align-items:center;gap:1rem}
+.space-bar{height:20px;background:var(--accent);border-radius:3px}
+.space-meta{font-size:.8rem;color:var(--muted)}
+.space-name{font-weight:500;color:var(--ink)}
+.radius-grid{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem}
+.radius-box{display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.radius-sample{width:60px;height:60px;background:rgba(0,0,0,.06);border:0.5px solid rgba(0,0,0,.15)}
+.radius-label{font-size:.72rem;color:var(--muted);text-align:center}
+.radius-val{font-weight:500;color:var(--ink);display:block}
+.voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.voice-card{border:0.5px solid var(--border);border-radius:10px;padding:1rem 1.25rem;background:var(--card)}
+.voice-trait{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:.5rem}
+.voice-desc{font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem}
+.voice-example{font-size:.8rem;font-style:italic;color:var(--muted);border-left:2px solid var(--accent);padding-left:.75rem;line-height:1.5}
+.motion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.motion-card{border:0.5px solid var(--border);border-radius:10px;padding:1rem 1.25rem;background:var(--card)}
+.motion-name{font-size:.78rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem}
+.motion-val{font-size:.82rem;color:var(--accent);font-weight:500;margin-bottom:.25rem}
+.motion-use{font-size:.75rem;color:var(--muted);line-height:1.5}
+.alt-palette-section{margin-top:2rem}
+.alt-palette-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.5rem;margin-top:1.5rem}
+@media(max-width:600px){.logo-showcase,.logo-icon-row,.voice-grid,.motion-grid,.do-dont{grid-template-columns:1fr}.palette-tokens{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="brand-doc">
+
+<div class="doc-version">Brand guidelines v1.0 — 2026</div>
+<div class="doc-title">Triplyy<span>.</span> Brand System</div>
+<p class="doc-subtitle">The complete reference for colors, typography, logo usage, spacing, voice, and motion.</p>
+
+<!-- 01 LOGO -->
+<div class="section">
+  <div class="section-head"><span class="section-num">01</span><span class="section-title">Logo</span></div>
+
+  <div class="subsection-label">Primary wordmark</div>
+  <div class="logo-showcase">
+    <div class="logo-box">
+      <div class="logo-mark">Triplyy<span class="dot">.</span></div>
+      <div class="logo-caption">On light</div>
+    </div>
+    <div class="logo-box dark-bg">
+      <div class="logo-mark on-dark">Triplyy<span class="dot">.</span></div>
+      <div class="logo-caption light">On dark</div>
+    </div>
+    <div class="logo-box accent-bg">
+      <div class="logo-mark on-accent">Triplyy<span class="dot">.</span></div>
+      <div class="logo-caption light">On brand color</div>
+    </div>
+  </div>
+
+  <div class="subsection-label">App icon variants</div>
+  <div class="logo-icon-row">
+    <div class="icon-box">
+      <div class="icon-mark" style="background:#D85A30;color:#fff">Ty</div>
+      <div class="icon-caption">Primary<br/>Coral</div>
+    </div>
+    <div class="icon-box">
+      <div class="icon-mark" style="background:#1A1612;color:#F7F3ED">Ty</div>
+      <div class="icon-caption">Dark<br/>Ink</div>
+    </div>
+    <div class="icon-box">
+      <div class="icon-mark" style="background:#0F6E56;color:#E1F5EE">Ty</div>
+      <div class="icon-caption">Teal<br/>Accent</div>
+    </div>
+    <div class="icon-box">
+      <div class="icon-mark" style="background:#F7F3ED;color:#1A1612;border:0.5px solid #E8E2D9">Ty</div>
+      <div class="icon-caption">Mono<br/>Light</div>
+    </div>
+  </div>
+
+  <div class="subsection-label">Logo rules</div>
+  <div class="do-dont">
+    <div class="do-box">
+      <strong>Do</strong>
+      <ul>
+        <li>Always keep the trailing dot — it's part of the mark</li>
+        <li>Use Syne 800 weight only for the wordmark</li>
+        <li>Minimum size: 120px width on digital</li>
+        <li>Maintain clear space equal to the height of the "T" on all sides</li>
+        <li>Use approved color variants only</li>
+      </ul>
+    </div>
+    <div class="dont-box">
+      <strong>Don't</strong>
+      <ul>
+        <li>Remove the dot or replace it with another character</li>
+        <li>Stretch, skew, or rotate the wordmark</li>
+        <li>Use the logo smaller than 80px wide</li>
+        <li>Place the logo on busy backgrounds</li>
+        <li>Recreate the logo in a different font</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 02 COLOR -->
+<div class="section">
+  <div class="section-head"><span class="section-num">02</span><span class="section-title">Color palettes</span></div>
+
+  <div class="subsection-label">Active palette — Warm desert</div>
+  <div class="palette-option">
+    <div class="palette-header">
+      <span class="palette-name">Warm desert</span>
+      <span class="palette-tag tag-current">Active</span>
+    </div>
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#F7F3ED;flex:2"><span class="swatch-label" style="color:#7A7168">Sand</span></div>
+      <div class="swatch" style="background:#1A1612;flex:1"><span class="swatch-label" style="color:#F7F3ED">Ink</span></div>
+      <div class="swatch" style="background:#D85A30;flex:1"><span class="swatch-label" style="color:#fff">Coral</span></div>
+      <div class="swatch" style="background:#0F6E56;flex:1"><span class="swatch-label" style="color:#E1F5EE">Teal</span></div>
+      <div class="swatch" style="background:#E8E2D9;flex:1"><span class="swatch-label" style="color:#7A7168">Border</span></div>
+    </div>
+    <div class="palette-tokens">
+      <div class="token-row"><div class="token-dot" style="background:#F7F3ED;border:0.5px solid #E8E2D9"></div><div class="token-info"><span class="token-name">--sand</span>#F7F3ED — bg primary</div></div>
+      <div class="token-row"><div class="token-dot" style="background:#1A1612"></div><div class="token-info"><span class="token-name">--ink</span>#1A1612 — text primary</div></div>
+      <div class="token-row"><div class="token-dot" style="background:#D85A30"></div><div class="token-info"><span class="token-name">--accent</span>#D85A30 — CTA, links</div></div>
+      <div class="token-row"><div class="token-dot" style="background:#FAECE7"></div><div class="token-info"><span class="token-name">--accent-light</span>#FAECE7 — accent bg</div></div>
+      <div class="token-row"><div class="token-dot" style="background:#0F6E56"></div><div class="token-info"><span class="token-name">--teal</span>#0F6E56 — success, AI tag</div></div>
+      <div class="token-row"><div class="token-dot" style="background:#7A7168"></div><div class="token-info"><span class="token-name">--muted</span>#7A7168 — body secondary</div></div>
+    </div>
+  </div>
+  <div class="info-box">The warm desert palette evokes sun-baked landscapes and adventure. <strong>Coral</strong> (#D85A30) is energetic but not alarming — it reads as action, not danger. <strong>Teal</strong> grounds it with reliability. Best for a backpacker audience that wants warmth over corporate polish.</div>
+
+  <div class="alt-palette-section">
+    <div class="subsection-label">Alternative palettes — choose one if rebranding</div>
+
+    <div class="alt-palette-title">A — Midnight dusk</div>
+    <div class="palette-option">
+      <div class="palette-header"><span class="palette-name">Midnight dusk</span><span class="palette-tag tag-alt">Alternative A</span></div>
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#F4F1FF;flex:2"><span class="swatch-label" style="color:#6B6880">Lavender mist</span></div>
+        <div class="swatch" style="background:#1C1830;flex:1"><span class="swatch-label" style="color:#F4F1FF">Deep violet</span></div>
+        <div class="swatch" style="background:#7B61FF;flex:1"><span class="swatch-label" style="color:#fff">Electric violet</span></div>
+        <div class="swatch" style="background:#F5A623;flex:1"><span class="swatch-label" style="color:#1C1830">Amber glow</span></div>
+        <div class="swatch" style="background:#E2DDFF;flex:1"><span class="swatch-label" style="color:#6B6880">Soft violet</span></div>
+      </div>
+      <div class="palette-tokens">
+        <div class="token-row"><div class="token-dot" style="background:#F4F1FF;border:0.5px solid #E2DDFF"></div><div class="token-info"><span class="token-name">--bg</span>#F4F1FF</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#1C1830"></div><div class="token-info"><span class="token-name">--ink</span>#1C1830</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#7B61FF"></div><div class="token-info"><span class="token-name">--accent</span>#7B61FF</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#F5A623"></div><div class="token-info"><span class="token-name">--highlight</span>#F5A623</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#E2DDFF"></div><div class="token-info"><span class="token-name">--accent-light</span>#E2DDFF</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#6B6880"></div><div class="token-info"><span class="token-name">--muted</span>#6B6880</div></div>
+      </div>
+    </div>
+    <div class="info-box"><strong>Best for:</strong> a more digital, app-first audience. The violet signals tech-forward and the amber pop creates contrast. Works exceptionally well in dark mode.</div>
+
+    <div class="alt-palette-title">B — Coastal green</div>
+    <div class="palette-option">
+      <div class="palette-header"><span class="palette-name">Coastal green</span><span class="palette-tag tag-alt">Alternative B</span></div>
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#EDF7F2;flex:2"><span class="swatch-label" style="color:#4A7C66">Seafoam</span></div>
+        <div class="swatch" style="background:#0D2B20;flex:1"><span class="swatch-label" style="color:#EDF7F2">Forest night</span></div>
+        <div class="swatch" style="background:#1DB87A;flex:1"><span class="swatch-label" style="color:#fff">Emerald</span></div>
+        <div class="swatch" style="background:#FF6B35;flex:1"><span class="swatch-label" style="color:#fff">Sunset</span></div>
+        <div class="swatch" style="background:#D4EDE3;flex:1"><span class="swatch-label" style="color:#4A7C66">Pale green</span></div>
+      </div>
+      <div class="palette-tokens">
+        <div class="token-row"><div class="token-dot" style="background:#EDF7F2;border:0.5px solid #D4EDE3"></div><div class="token-info"><span class="token-name">--bg</span>#EDF7F2</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#0D2B20"></div><div class="token-info"><span class="token-name">--ink</span>#0D2B20</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#1DB87A"></div><div class="token-info"><span class="token-name">--accent</span>#1DB87A</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#FF6B35"></div><div class="token-info"><span class="token-name">--pop</span>#FF6B35</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#D4EDE3"></div><div class="token-info"><span class="token-name">--accent-light</span>#D4EDE3</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#4A7C66"></div><div class="token-info"><span class="token-name">--muted</span>#4A7C66</div></div>
+      </div>
+    </div>
+    <div class="info-box"><strong>Best for:</strong> eco-conscious or slow-travel positioning. The emerald reads as fresh and alive. Strong if you ever want to lean into sustainability messaging.</div>
+
+    <div class="alt-palette-title">C — Deep nomad (dark-first)</div>
+    <div class="palette-option">
+      <div class="palette-header"><span class="palette-name">Deep nomad</span><span class="palette-tag tag-alt">Alternative C</span></div>
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#121212;flex:2"><span class="swatch-label" style="color:#555">Charcoal</span></div>
+        <div class="swatch" style="background:#F0E6D3;flex:1"><span class="swatch-label" style="color:#7A6A55">Parchment</span></div>
+        <div class="swatch" style="background:#E8C547;flex:1"><span class="swatch-label" style="color:#1A1209">Gold</span></div>
+        <div class="swatch" style="background:#C2421D;flex:1"><span class="swatch-label" style="color:#fff">Rust</span></div>
+        <div class="swatch" style="background:#2A2A2A;flex:1"><span class="swatch-label" style="color:#888">Surface</span></div>
+      </div>
+      <div class="palette-tokens">
+        <div class="token-row"><div class="token-dot" style="background:#121212;border:0.5px solid #333"></div><div class="token-info"><span class="token-name">--bg</span>#121212</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#F0E6D3"></div><div class="token-info"><span class="token-name">--text</span>#F0E6D3</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#E8C547"></div><div class="token-info"><span class="token-name">--accent</span>#E8C547</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#C2421D"></div><div class="token-info"><span class="token-name">--pop</span>#C2421D</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#2A2A2A;border:0.5px solid #444"></div><div class="token-info"><span class="token-name">--surface</span>#2A2A2A</div></div>
+        <div class="token-row"><div class="token-dot" style="background:#7A6A55"></div><div class="token-info"><span class="token-name">--muted</span>#7A6A55</div></div>
+      </div>
+    </div>
+    <div class="info-box"><strong>Best for:</strong> bold dark-first positioning targeting older backpackers or budget business travelers. The gold accent is punchy and rare in travel SaaS — immediately memorable.</div>
+  </div>
+</div>
+
+<!-- 03 TYPOGRAPHY -->
+<div class="section">
+  <div class="section-head"><span class="section-num">03</span><span class="section-title">Typography</span></div>
+  <div class="type-specimen">
+    <div class="type-row">
+      <div class="type-meta"><span class="type-meta-name">Display heading</span><span class="type-meta-spec">Syne 800 — clamp(2.4rem, 6vw, 4rem)</span></div>
+      <div class="type-sample" style="font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-1.5px;line-height:1.1">Deals. Your way.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><span class="type-meta-name">Section heading</span><span class="type-meta-spec">Syne 700 — clamp(1.6rem, 3.5vw, 2.4rem)</span></div>
+      <div class="type-sample" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-.8px;line-height:1.15">How it works</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><span class="type-meta-name">Card title</span><span class="type-meta-spec">Syne 700 — 1rem</span></div>
+      <div class="type-sample" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.2px">Fill your trip form</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><span class="type-meta-name">Body copy</span><span class="type-meta-spec">DM Sans 300 — 1rem / 1.7</span></div>
+      <div class="type-sample" style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:1rem;line-height:1.7;color:var(--muted)">Tell us where you're going and when. We scan hundreds of deals and send you only what fits your budget — weekly, curated, no noise.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><span class="type-meta-name">UI label</span><span class="type-meta-spec">DM Sans 500 — 0.78rem uppercase</span></div>
+      <div class="type-sample" style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Where are you going?</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><span class="type-meta-name">Price figure</span><span class="type-meta-spec">Syne 800 — 2.2rem</span></div>
+      <div class="type-sample" style="font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-1.5px;line-height:1">$9 <span style="font-size:.9rem;font-weight:400;color:var(--muted)">/month</span></div>
+    </div>
+    <div class="type-row" style="border-bottom:none">
+      <div class="type-meta"><span class="type-meta-name">Section label</span><span class="type-meta-spec">DM Sans 500 — 0.78rem uppercase accent</span></div>
+      <div class="type-sample" style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)">How it works</div>
+    </div>
+  </div>
+  <div class="info-box"><strong>Font pairing rationale:</strong> Syne's geometric boldness gives Triplyy its adventurous, confident identity. DM Sans's optical sizing and light weight keeps body copy comfortable at scale. Never use Inter, Roboto, or system fonts in brand contexts.</div>
+</div>
+
+<!-- 04 SPACING -->
+<div class="section">
+  <div class="section-head"><span class="section-num">04</span><span class="section-title">Spacing and radius</span></div>
+
+  <div class="subsection-label">Spacing scale</div>
+  <div class="spacing-grid">
+    <div class="space-row"><div style="width:200px;flex-shrink:0"><div class="space-bar" style="width:4px"></div></div><div class="space-meta"><span class="space-name">4px</span> — micro gap (icon + label)</div></div>
+    <div class="space-row"><div style="width:200px;flex-shrink:0"><div class="space-bar" style="width:8px"></div></div><div class="space-meta"><span class="space-name">8px</span> — component internal gap</div></div>
+    <div class="space-row"><div style="width:200px;flex-shrink:0"><div class="space-bar" style="width:12px"></div></div><div class="space-meta"><span class="space-name">12px</span> — tight card gap</div></div>
+    <div class="space-row"><div style="width:200px;flex-shrink:0"><div class="space-bar" style="width:20px"></div></div><div class="space-meta"><span class="space-name">1.25rem</span> — card padding</div></div>
+    <div class="space-row"><div style="width:200px;flex-shrink:0"><div class="space-bar" style="width:32px"></div></div><div class="space-meta"><span class="space-name">2rem</span> — section internal spacing</div></div>
+    <div class="space-row"><div style="width:200px;flex-shrink:0"><div class="space-bar" style="width:64px"></div></div><div class="space-meta"><span class="space-name">4rem</span> — between page sections</div></div>
+  </div>
+
+  <div class="subsection-label">Border radius</div>
+  <div class="radius-grid">
+    <div class="radius-box"><div class="radius-sample" style="border-radius:4px"></div><div class="radius-label"><span class="radius-val">4px</span>tags, badges</div></div>
+    <div class="radius-box"><div class="radius-sample" style="border-radius:8px"></div><div class="radius-label"><span class="radius-val">8px</span>inputs, buttons</div></div>
+    <div class="radius-box"><div class="radius-sample" style="border-radius:12px"></div><div class="radius-label"><span class="radius-val">12px</span>cards</div></div>
+    <div class="radius-box"><div class="radius-sample" style="border-radius:14px"></div><div class="radius-label"><span class="radius-val">14px</span>large cards</div></div>
+    <div class="radius-box"><div class="radius-sample" style="border-radius:99px;width:80px;height:32px"></div><div class="radius-label"><span class="radius-val">99px</span>pills, tabs</div></div>
+  </div>
+</div>
+
+<!-- 05 VOICE -->
+<div class="section">
+  <div class="section-head"><span class="section-num">05</span><span class="section-title">Voice and tone</span></div>
+  <div class="voice-grid">
+    <div class="voice-card">
+      <div class="voice-trait">Direct</div>
+      <div class="voice-desc">Say the thing. No fluff, no filler. Backpackers are pragmatic people who hate wasted words.</div>
+      <div class="voice-example">"8 hostel deals for Istanbul. Under $30/night."<br/>Not: "We've curated a wonderful selection..."</div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-trait">Confident</div>
+      <div class="voice-desc">We know the deals are good. No hedging, no maybe. State things plainly and stand by them.</div>
+      <div class="voice-example">"This is the best hostel in Taksim for solo travelers."<br/>Not: "This might be a good option for..."</div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-trait">Warm, not hype</div>
+      <div class="voice-desc">We're a travel-savvy friend, not a salesperson. Excited about the deal but not screaming about it.</div>
+      <div class="voice-example">"Free breakfast and a rooftop. Hard to beat at $19."<br/>Not: "AMAZING DEAL!!! Don't miss out!!!"</div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-trait">Specific</div>
+      <div class="voice-desc">Vague is useless. Dates, prices, distances — always. A deal without a number isn't a deal.</div>
+      <div class="voice-example">"200m from Hagia Sophia. $19/night. 4.7 stars."<br/>Not: "Conveniently located near top sights."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 MOTION -->
+<div class="section">
+  <div class="section-head"><span class="section-num">06</span><span class="section-title">Motion</span></div>
+  <div class="motion-grid">
+    <div class="motion-card"><div class="motion-name">Default transition</div><div class="motion-val">200ms ease</div><div class="motion-use">Hover states, color transitions, border changes</div></div>
+    <div class="motion-card"><div class="motion-name">Button press</div><div class="motion-val">150ms ease + scale(0.98)</div><div class="motion-use">All clickable elements on active state</div></div>
+    <div class="motion-card"><div class="motion-name">Page entrance</div><div class="motion-val">600ms ease-out, staggered</div><div class="motion-use">Hero section elements, 80ms delay per element</div></div>
+    <div class="motion-card"><div class="motion-name">Lift on hover</div><div class="motion-val">translateY(-2px) 150ms</div><div class="motion-use">Primary CTA button hover only</div></div>
+    <div class="motion-card"><div class="motion-name">Marquee</div><div class="motion-val">20s linear infinite</div><div class="motion-use">Deal ticker, social proof banner</div></div>
+    <div class="motion-card"><div class="motion-name">Skeleton load</div><div class="motion-val">1.5s ease-in-out pulse</div><div class="motion-use">Deal cards while API data is fetching</div></div>
+  </div>
+  <div class="info-box"><strong>Principle:</strong> motion should inform, not perform. Animations exist to show state change or guide attention — not to look impressive. Always respect <code>prefers-reduced-motion</code>.</div>
+</div>
+
+</div>
+</body>
+</html>

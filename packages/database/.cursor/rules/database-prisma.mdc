@@ -1,0 +1,24 @@
+---
+description: packages/database (Prisma + Supabase). Prefer Prisma client + migrations; never edit generated artifacts manually.
+alwaysApply: true
+---
+
+## Stack
+
+- Prisma (`prisma`, `@prisma/client`)
+- TypeScript package compiled to `dist/` (exports `./dist/index.js`)
+- Uses `dotenv-cli` scripts to select env files for migrate/seed/studio
+
+## Prisma rules
+
+- Treat Prisma schema + migrations as source of truth.
+- Never hand-edit generated Prisma client output.
+- Prefer safe migrations:
+  - Additive changes first when possible.
+  - Be careful with destructive schema changes; include migration rationale in PR/commit message.
+
+## Environment & scripts
+
+- Scripts use `../../.env.*` files; do not hardcode secrets or connection strings.
+- Keep seed/migration scripts deterministic where possible; avoid time-dependent randomness unless required.
+

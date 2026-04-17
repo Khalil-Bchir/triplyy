@@ -1,0 +1,239 @@
+// ============================================================
+// Travel Deals Micro SaaS — Prisma Schema
+// Stack: PostgreSQL + Prisma
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum SubscriptionTier {
+  FREE
+  BASIC
+  PRO
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  PAST_DUE
+  TRIALING
+}
+
+enum AccommodationType {
+  HOSTEL
+  BUDGET_HOTEL
+  BOTH
+}
+
+enum TravelerType {
+  SOLO
+  COUPLE
+  GROUP
+}
+
+enum DigestStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum DealType {
+  HOTEL
+  HOSTEL
+  FLIGHT
+  PACKAGE
+}
+
+enum UserStatus {
+  LEAD
+  USER
+}
+
+// ============================================================
+// USER
+// ============================================================
+
+model User {
+  /**
+   * Supabase Auth user id (UUID).
+   */
+  id        String     @id @db.Uuid
+  email     String     @unique
+  firstName String?
+  lastName  String?
+  status    UserStatus @default(LEAD)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  subscription Subscription?
+  trips        Trip[]
+  digests      Digest[]
+
+  @@map("users")
+}
+
+// ============================================================
+// SUBSCRIPTION
+// ============================================================
+
+model Subscription {
+  id     String             @id @default(cuid())
+  userId String             @unique @db.Uuid
+  tier   SubscriptionTier   @default(FREE)
+  status SubscriptionStatus @default(ACTIVE)
+
+  // Stripe
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
+  stripePriceId        String?
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ============================================================
+// TRIP
+// ============================================================
+
+model Trip {
+  id     String @id @default(cuid())
+  userId String @db.Uuid
+  name   String // e.g. "Istanbul October"
+
+  // Destination
+  destinationCity    String
+  destinationCountry String
+  destinationCode    String? // IATA city code e.g. "IST"
+
+  // Origin (for flight deals)
+  originCity    String?
+  originCountry String?
+  originCode    String?
+
+  // Dates
+  departureDate DateTime
+  returnDate    DateTime
+
+  // Preferences
+  budgetPerNight Float // in USD
+  totalBudget    Float? // overall trip budget
+  travelerType   TravelerType      @default(SOLO)
+  travelerCount  Int               @default(1)
+  accommodation  AccommodationType @default(BOTH)
+  currency       String            @default("USD")
+
+  // Notes / extra context the user provides
+  notes String?
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deals   Deal[]
+  digests Digest[]
+
+  @@map("trips")
+}
+
+// ============================================================
+// DEAL
+// ============================================================
+
+model Deal {
+  id     String @id @default(cuid())
+  tripId String
+
+  type        DealType
+  title       String
+  description String?
+  provider    String // e.g. "Booking.com", "Hostelworld"
+  externalId  String? // ID from the source API
+  url         String
+
+  // Pricing
+  pricePerNight Float?
+  totalPrice    Float?
+  currency      String @default("USD")
+  originalPrice Float? // for showing discount
+  discountPct   Int?
+
+  // Location
+  city        String?
+  address     String?
+  latitude    Float?
+  longitude   Float?
+  rating      Float?
+  reviewCount Int?
+
+  // AI layer (Pro tier only)
+  aiScore  Float? // 0-1 ranking score
+  aiReason String? // why Claude recommends this
+
+  // Metadata
+  availableFrom DateTime?
+  availableTo   DateTime?
+  fetchedAt     DateTime  @default(now())
+  expiresAt     DateTime?
+
+  trip        Trip         @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  digestDeals DigestDeal[]
+
+  @@map("deals")
+}
+
+// ============================================================
+// DIGEST  (one email send = one digest)
+// ============================================================
+
+model Digest {
+  id        String       @id @default(cuid())
+  userId    String       @db.Uuid
+  tripId    String
+  status    DigestStatus @default(PENDING)
+  sentAt    DateTime?
+  subject   String?
+  isAi      Boolean      @default(false) // true = Pro AI digest
+  errorMsg  String?
+  createdAt DateTime     @default(now())
+
+  user  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trip  Trip         @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  deals DigestDeal[]
+
+  @@map("digests")
+}
+
+// ============================================================
+// DIGEST <-> DEAL  (join table — which deals were in each email)
+// ============================================================
+
+model DigestDeal {
+  id       String @id @default(cuid())
+  digestId String
+  dealId   String
+  position Int // order in the email
+
+  digest Digest @relation(fields: [digestId], references: [id], onDelete: Cascade)
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@unique([digestId, dealId])
+  @@map("digest_deals")
+}

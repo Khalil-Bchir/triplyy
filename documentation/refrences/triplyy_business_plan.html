@@ -1,0 +1,515 @@
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --sand:#F7F3ED;--ink:#1A1612;--muted:#7A7168;--accent:#D85A30;--accent-light:#FAECE7;
+    --teal:#0F6E56;--teal-light:#E1F5EE;--card:#FFFFFF;--border:#E8E2D9;--radius:14px;
+    --pro:#7F77DD;--pro-light:#EEEDFE;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{--sand:#1e1a16;--ink:#F0EBE3;--muted:#9A9088;--card:#2a2420;--border:#3a342e;--accent-light:#3d2318;--teal-light:#0d2e22;--pro-light:#1e1c3a}
+  }
+  body{background:var(--sand);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;font-size:15px;line-height:1.6}
+  .doc{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .cover{text-align:center;padding:3rem 1rem 2.5rem;border-bottom:1px solid var(--border);margin-bottom:2.5rem}
+  .cover-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--teal-light);color:var(--teal);font-size:.75rem;font-weight:600;padding:.3rem .85rem;border-radius:99px;margin-bottom:1.5rem;letter-spacing:.04em}
+  .cover-badge::before{content:'';display:inline-block;width:5px;height:5px;background:var(--teal);border-radius:50%}
+  .cover h1{font-family:'Syne',system-ui,sans-serif;font-weight:800;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:-1.5px;line-height:1.1;margin-bottom:.75rem}
+  .cover h1 span{color:var(--accent)}
+  .cover-meta{font-size:.85rem;color:var(--muted)}
+  .toc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem 1.75rem;margin-bottom:2.5rem}
+  .toc h3{font-family:'Syne',system-ui,sans-serif;font-weight:700;font-size:.9rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+  .toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.35rem .5rem}
+  @media(max-width:550px){.toc-list{grid-template-columns:1fr}}
+  .toc-list li a{font-size:.88rem;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:.4rem}
+  .toc-list li a:hover{text-decoration:underline}
+  .toc-list li a::before{content:attr(data-num);font-family:'Syne',sans-serif;font-size:.7rem;color:var(--muted);min-width:18px}
+  section{margin-bottom:2.75rem}
+  .section-label{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+  h2{font-family:'Syne',system-ui,sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:-.6px;color:var(--ink);margin-bottom:.4rem;line-height:1.2}
+  h3{font-family:'Syne',system-ui,sans-serif;font-weight:700;font-size:1.05rem;color:var(--ink);margin-bottom:.6rem;margin-top:1.4rem}
+  p{color:var(--muted);margin-bottom:.9rem;font-size:.9rem;line-height:1.75}
+  .divider{border:none;border-top:1px solid var(--border);margin:2rem 0}
+  .callout{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1rem 0}
+  .callout p{color:var(--teal);margin:0;font-size:.88rem}
+  .callout-accent{background:var(--accent-light);border-left:3px solid var(--accent)}
+  .callout-accent p{color:var(--accent)}
+  .callout-pro{background:var(--pro-light);border-left:3px solid var(--pro)}
+  .callout-pro p{color:var(--pro)}
+  /* PLAN CARDS */
+  .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.25rem 0}
+  @media(max-width:600px){.plan-grid{grid-template-columns:1fr}}
+  .plan-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;position:relative}
+  .plan-card.basic{border:2px solid var(--accent)}
+  .plan-card.pro-c{border:2px solid var(--pro)}
+  .plan-name{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:.3rem}
+  .plan-price{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-1px;line-height:1}
+  .plan-price span{font-size:.82rem;font-weight:400;color:var(--muted)}
+  .plan-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.18rem .55rem;border-radius:99px;margin-bottom:.65rem}
+  .plan-tag.free-t{background:var(--teal-light);color:var(--teal)}
+  .plan-tag.basic-t{background:var(--accent-light);color:var(--accent)}
+  .plan-tag.pro-t{background:var(--pro-light);color:var(--pro)}
+  .plan-features{list-style:none;margin-top:.85rem}
+  .plan-features li{font-size:.82rem;color:var(--muted);padding:.3rem 0;border-top:1px solid var(--border);display:flex;align-items:flex-start;gap:.5rem;line-height:1.4}
+  .plan-features li::before{content:'';width:5px;height:5px;background:var(--teal);border-radius:50%;flex-shrink:0;margin-top:.45rem}
+  .plan-features li.off{opacity:.4}
+  .plan-features li.off::before{background:var(--muted)}
+  /* FLOW */
+  .flow-tier{margin-bottom:1.75rem}
+  .flow-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+  .flow-badge{font-size:.72rem;font-weight:700;padding:.25rem .75rem;border-radius:99px;letter-spacing:.04em}
+  .flow-badge.f{background:var(--teal-light);color:var(--teal)}
+  .flow-badge.b{background:var(--accent-light);color:var(--accent)}
+  .flow-badge.p{background:var(--pro-light);color:var(--pro)}
+  .flow-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--ink)}
+  .flow-steps{display:flex;flex-direction:column;gap:0}
+  .flow-step{display:flex;gap:1rem;position:relative}
+  .flow-step:not(:last-child)::before{content:'';position:absolute;left:15px;top:36px;bottom:0;width:1px;background:var(--border)}
+  .step-dot{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;color:var(--muted);flex-shrink:0;margin-top:2px}
+  .step-dot.f{border-color:var(--teal);color:var(--teal)}
+  .step-dot.b{border-color:var(--accent);color:var(--accent)}
+  .step-dot.p{border-color:var(--pro);color:var(--pro)}
+  .step-body{padding-bottom:1.25rem}
+  .step-body strong{display:block;font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+  .step-body span{font-size:.82rem;color:var(--muted);line-height:1.55}
+  /* TECH STACK */
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem;margin:1rem 0}
+  .stack-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+  .stack-card h4{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+  .stack-card p{font-size:.82rem;color:var(--ink);margin:0;line-height:1.5}
+  /* REVENUE */
+  .rev-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.84rem}
+  .rev-table th{text-align:left;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:.5rem .75rem;border-bottom:2px solid var(--border)}
+  .rev-table td{padding:.55rem .75rem;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .rev-table td:first-child{color:var(--ink);font-weight:500}
+  .rev-table tr:last-child td{border-bottom:none;font-weight:700;color:var(--ink)}
+  /* RISK */
+  .risk-row{display:flex;gap:.75rem;align-items:flex-start;padding:.9rem 0;border-bottom:1px solid var(--border)}
+  .risk-row:last-child{border-bottom:none}
+  .risk-pill{font-size:.68rem;font-weight:700;padding:.2rem .55rem;border-radius:99px;flex-shrink:0;margin-top:2px}
+  .risk-high{background:#FCEBEB;color:#A32D2D}
+  .risk-med{background:#FAEEDA;color:#854F0B}
+  .risk-low{background:var(--teal-light);color:var(--teal)}
+  @media(prefers-color-scheme:dark){.risk-high{background:#3d1414;color:#f09595}.risk-med{background:#3d2e0d;color:#EF9F27}}
+  .risk-body strong{display:block;font-size:.88rem;color:var(--ink);margin-bottom:.15rem}
+  .risk-body span{font-size:.82rem;color:var(--muted)}
+  /* ROADMAP */
+  .roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:1rem 0}
+  .rm-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem}
+  .rm-phase{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+  .rm-ph1{color:var(--teal)}
+  .rm-ph2{color:var(--accent)}
+  .rm-ph3{color:var(--pro)}
+  .rm-ph4{color:var(--muted)}
+  .rm-card h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:.5rem}
+  .rm-card ul{list-style:none;padding:0}
+  .rm-card ul li{font-size:.8rem;color:var(--muted);padding:.2rem 0;display:flex;gap:.4rem;align-items:flex-start;line-height:1.4}
+  .rm-card ul li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0;margin-top:.45rem}
+</style>
+
+<div class="doc">
+
+  <div class="cover">
+    <div class="cover-badge">Micro SaaS Business Plan</div>
+    <h1>Triplyy<span>.</span><br>Business Plan</h1>
+    <p class="cover-meta">Version 1.0 &mdash; April 2026 &mdash; Confidential</p>
+  </div>
+
+  <nav class="toc" aria-label="Table of contents">
+    <h3>Contents</h3>
+    <ul class="toc-list">
+      <li><a href="#overview" data-num="01">Product overview</a></li>
+      <li><a href="#model" data-num="02">Business model</a></li>
+      <li><a href="#plans" data-num="03">Pricing plans</a></li>
+      <li><a href="#flows" data-num="04">User flows</a></li>
+      <li><a href="#auth" data-num="05">Auth and onboarding</a></li>
+      <li><a href="#tech" data-num="06">Technical stack</a></li>
+      <li><a href="#revenue" data-num="07">Revenue projections</a></li>
+      <li><a href="#gtm" data-num="08">Go-to-market strategy</a></li>
+      <li><a href="#risks" data-num="09">Risks and mitigations</a></li>
+      <li><a href="#roadmap" data-num="10">Product roadmap</a></li>
+    </ul>
+  </nav>
+
+  <!-- 01 OVERVIEW -->
+  <section id="overview">
+    <div class="section-label">01 — Product overview</div>
+    <h2>What is Triplyy?</h2>
+    <p>Triplyy is a travel deals micro SaaS that takes a traveler's trip details (destination, dates, budget, preferences) and delivers curated hotel, hostel, and flight deals to their email inbox and dashboard. It is positioned as a personal travel deals concierge rather than a booking engine.</p>
+    <p>The core insight: travel APIs are queryable by anyone, but filtering, ranking, and delivering the right deals for a specific person's trip profile in a clean, scannable digest is the actual product. That curation layer is the value, not the raw data.</p>
+    <div class="callout">
+      <p>The free tier does the selling for you. A well-formatted digest of real deals for an upcoming Istanbul trip makes paying $9/month feel like nothing.</p>
+    </div>
+    <h3>Problem being solved</h3>
+    <p>Travelers waste hours across Booking.com, Skyscanner, Google Flights, and Hostelworld each week, manually filtering for deals that match their specific trip window, budget, and travel style. There is no tool that learns a trip profile once and continuously surfaces relevant deals automatically.</p>
+    <h3>Solution</h3>
+    <p>Triplyy ingests a user's trip profile once (via a short form) and becomes a passive deal-scanner running in the background. Paid users receive weekly email digests and have access to a dashboard where deals are aggregated, filtered, and ranked. Pro users additionally receive an AI reasoning layer that evaluates deals against their travel style and explains why each pick fits them.</p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 02 BUSINESS MODEL -->
+  <section id="model">
+    <div class="section-label">02 — Business model</div>
+    <h2>How Triplyy makes money</h2>
+    <p>Triplyy is a pure subscription SaaS. Revenue comes from monthly subscription fees. There are no referral commissions or affiliate markups in v1 (though these can be layered in later as a secondary revenue stream).</p>
+    <h3>Value ladder</h3>
+    <p>Each tier is designed to sell the next one. The free tier converts to Basic by demonstrating value with a real sample digest. Basic converts to Pro by surfacing the AI upsell in every email footer and dashboard header.</p>
+    <div class="callout-accent">
+      <p>API data (flights, hotels) appears "free" on Booking.com to the end user. The real product is automated filtering, personalized delivery, and AI reasoning — none of which are available for free elsewhere.</p>
+    </div>
+    <h3>Deal sources: recommended approach</h3>
+    <p>Use travel APIs (Amadeus, Booking.com Affiliate, Skyscanner RapidAPI) for real-time data on the Free and Basic tiers. The AI reasoning layer on Pro uses those same results as input and passes them through an LLM (Claude API or GPT-4o) to generate ranked recommendations with written explanations. This keeps infra cost predictable and scales AI cost only where it is being charged for.</p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 03 PRICING -->
+  <section id="plans">
+    <div class="section-label">03 — Pricing plans</div>
+    <h2>Plans and features</h2>
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="plan-tag free-t">Lead magnet</div>
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0 <span>one-time</span></div>
+        <ul class="plan-features">
+          <li>One sample digest email</li>
+          <li>Up to 5 deals per digest</li>
+          <li>Flights + hotels included</li>
+          <li class="off">Dashboard access</li>
+          <li class="off">Recurring digests</li>
+          <li class="off">AI recommendations</li>
+        </ul>
+      </div>
+      <div class="plan-card basic">
+        <div class="plan-tag basic-t">Most popular</div>
+        <div class="plan-name">Basic</div>
+        <div class="plan-price">$9 <span>/month</span></div>
+        <ul class="plan-features">
+          <li>Unlimited trips in dashboard</li>
+          <li>8&ndash;10 deals per digest, weekly</li>
+          <li>Flights + hotels + hostels</li>
+          <li>Full dashboard access</li>
+          <li>Trip profile management</li>
+          <li class="off">AI-ranked recommendations</li>
+        </ul>
+      </div>
+      <div class="plan-card pro-c">
+        <div class="plan-tag pro-t">Power users</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$24 <span>/month</span></div>
+        <ul class="plan-features">
+          <li>Everything in Basic</li>
+          <li>AI-ranked deals with reasoning</li>
+          <li>On-demand digest anytime</li>
+          <li>Multi-trip AI comparisons</li>
+          <li>Priority deal refresh (daily)</li>
+          <li>Travel style memory</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <p>Annual billing (10th month free) can be offered at launch to improve cash flow and reduce churn. Suggested: $81/yr for Basic ($6.75/mo effective), $216/yr for Pro ($18/mo effective).</p>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 04 USER FLOWS -->
+  <section id="flows">
+    <div class="section-label">04 — User flows</div>
+    <h2>Full user flows per tier</h2>
+
+    <!-- FREE FLOW -->
+    <div class="flow-tier">
+      <div class="flow-header">
+        <div class="flow-badge f">Free tier</div>
+        <div class="flow-title">One-time sample digest</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-dot f">1</div>
+          <div class="step-body"><strong>Landing page</strong><span>User lands on triplyy.app. Hero CTA reads "Get your free travel digest." No account, no password required. Single button click.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot f">2</div>
+          <div class="step-body"><strong>Trip intake form</strong><span>Inline form on the landing page (or a dedicated /start page). Collects: email address, destination, travel dates, nightly budget, traveler type (solo, couple, family), accommodation preference (hostel/hotel/any).</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot f">3</div>
+          <div class="step-body"><strong>Magic link sent</strong><span>Triplyy sends a magic-link email. Subject: "Confirm your email to get your free digest." User clicks the link to verify the email and authorize sending.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot f">4</div>
+          <div class="step-body"><strong>Digest generated and sent</strong><span>Within minutes of confirmation, one sample digest email is sent. Contains up to 5 curated deals (flights + hotels) matching the trip profile. Each deal includes name, price, key stats, and a direct booking link.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot f">5</div>
+          <div class="step-body"><strong>Email footer CTA</strong><span>Digest email footer includes a persistent upgrade banner: "Want 8-10 deals every week + a full dashboard? Upgrade to Basic for $9/mo." Links to /pricing with the email pre-filled.</span></div>
+        </div>
+        <div class="flow-step" style="padding-bottom:0">
+          <div class="step-dot f">6</div>
+          <div class="step-body" style="padding-bottom:0"><strong>Gate on revisit</strong><span>If the user clicks any link other than the upgrade CTA, they land on a locked dashboard teaser page. A blurred dashboard mockup is shown with an overlay: "Unlock your deal dashboard. $9/month." One button: Upgrade to Basic.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BASIC FLOW -->
+    <div class="flow-tier" style="margin-top:1.75rem">
+      <div class="flow-header">
+        <div class="flow-badge b">Basic — $9/mo</div>
+        <div class="flow-title">Dashboard + weekly digests</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-dot b">1</div>
+          <div class="step-body"><strong>Upgrade or sign up</strong><span>User either upgrades from Free (email pre-filled) or lands on /pricing and clicks "Start Basic." Stripe checkout handles billing. No separate registration step.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot b">2</div>
+          <div class="step-body"><strong>SSO login via magic link</strong><span>After payment, Triplyy sends a magic link to the email used at checkout. Clicking the link authenticates the user and opens their dashboard. No password ever created. Subsequent logins via "Log in with email" on /login.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot b">3</div>
+          <div class="step-body"><strong>Onboarding: trip profile setup</strong><span>If no trip was set up yet, a guided trip-setup screen is shown first. If the user came from Free, their previous form data is pre-filled. They can add more trips immediately. Unlimited trips per account.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot b">4</div>
+          <div class="step-body"><strong>Dashboard</strong><span>Main screen: list of active trips, last digest date, next digest scheduled. Each trip card shows: destination, dates, budget, latest deal count. User can edit any trip profile, pause digests, or delete a trip.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot b">5</div>
+          <div class="step-body"><strong>Weekly email digest</strong><span>Every Monday, Triplyy sends a digest for each active trip. 8-10 deals, filtered to destination + dates + budget + traveler type. Each deal includes direct booking link. Footer shows "Powered by Triplyy Basic" + Pro upsell.</span></div>
+        </div>
+        <div class="flow-step" style="padding-bottom:0">
+          <div class="step-dot b">6</div>
+          <div class="step-body" style="padding-bottom:0"><strong>Pro upsell surface</strong><span>Dashboard header shows a persistent but dismissible banner: "Unlock AI-ranked deals with reasoning. Upgrade to Pro." This same banner appears inside each deal row in the dashboard as a ghost/locked row.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRO FLOW -->
+    <div class="flow-tier" style="margin-top:1.75rem">
+      <div class="flow-header">
+        <div class="flow-badge p">Pro — $24/mo</div>
+        <div class="flow-title">AI-ranked deals + on-demand refresh</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-dot p">1</div>
+          <div class="step-body"><strong>Upgrade from Basic</strong><span>In-dashboard upgrade flow. User clicks "Upgrade to Pro," Stripe handles the prorated billing. No re-authentication needed. Dashboard instantly reflects Pro status.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot p">2</div>
+          <div class="step-body"><strong>Travel style profile</strong><span>One-time guided questionnaire (5-7 questions): travel pace, accommodation priority, food preferences, activity interests, sustainability concern. Stored as the AI context layer for all future recommendations.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot p">3</div>
+          <div class="step-body"><strong>AI-enriched dashboard</strong><span>Each deal now shows an "AI pick" badge and a 1-2 sentence reasoning: e.g., "Best for solo backpackers under $30/night — 200m from Hagia Sophia, free breakfast, 4.7-star rating." Deals are ranked by AI score, not just price.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot p">4</div>
+          <div class="step-body"><strong>On-demand refresh</strong><span>Pro users can trigger a manual digest refresh anytime via a "Refresh now" button on any trip card. Results update within 2-3 minutes. Capped at 3 manual refreshes per day to control API costs.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-dot p">5</div>
+          <div class="step-body"><strong>Multi-trip AI comparison</strong><span>A "Compare trips" view lets users select 2-3 trips and run an AI analysis: "You're going to Istanbul in October and Egypt in July. Here's which trip has better deals right now based on your budget." Output is a short AI-written summary.</span></div>
+        </div>
+        <div class="flow-step" style="padding-bottom:0">
+          <div class="step-dot p">6</div>
+          <div class="step-body" style="padding-bottom:0"><strong>Daily digest cadence</strong><span>Unlike Basic (weekly), Pro users receive daily digests for trips within 30 days of departure. Deals are refreshed more frequently and prioritized in the deal queue.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 05 AUTH -->
+  <section id="auth">
+    <div class="section-label">05 — Auth and onboarding</div>
+    <h2>Authentication model</h2>
+    <p>Triplyy uses passwordless email authentication only (magic links). No social login, no password creation. This reduces friction at signup and eliminates password reset flows entirely.</p>
+    <h3>How it works</h3>
+    <p>On the /login page, a user enters their email and clicks "Send me a link." An email with a time-limited (15-minute) magic link is sent. Clicking the link authenticates the session and redirects to the dashboard. The session is maintained via a long-lived JWT stored in an httpOnly cookie (30-day expiry, refreshed on activity).</p>
+    <div class="callout">
+      <p>Recommended implementation: Supabase Auth with magic link enabled. Zero custom auth code, built-in email templating, and RLS integration with the rest of the data layer.</p>
+    </div>
+    <h3>Access control by tier</h3>
+    <p>Route-level middleware checks subscription status on every dashboard request. Unauthenticated users are redirected to /login. Authenticated Free users are redirected to the upgrade teaser page (/upgrade). Authenticated Basic/Pro users access the full dashboard at /dashboard.</p>
+    <h3>Profile management (Basic and Pro only)</h3>
+    <p>Authenticated paid users can edit their profile from /dashboard/profile: name, email (triggers re-verification), billing management link (Stripe Customer Portal), notification preferences (email frequency, digest day preference), and subscription details.</p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 06 TECH STACK -->
+  <section id="tech">
+    <div class="section-label">06 — Technical stack</div>
+    <h2>Recommended stack</h2>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <h4>Frontend</h4>
+        <p>Next.js 14 (App Router), Tailwind CSS, shadcn/ui components. Deployed to Vercel.</p>
+      </div>
+      <div class="stack-card">
+        <h4>Backend / API</h4>
+        <p>Next.js API routes or Hono (lightweight). BullMQ for digest job queue. Redis for rate limiting and job state.</p>
+      </div>
+      <div class="stack-card">
+        <h4>Database</h4>
+        <p>Supabase (PostgreSQL). Prisma ORM. Tables: users, trips, deals, digest_logs, subscriptions.</p>
+      </div>
+      <div class="stack-card">
+        <h4>Auth</h4>
+        <p>Supabase Auth, magic link only. JWT sessions, httpOnly cookies. Middleware on /dashboard/* routes.</p>
+      </div>
+      <div class="stack-card">
+        <h4>Travel data</h4>
+        <p>Amadeus API (flights), Booking.com Affiliate API (hotels/hostels). Rate-limit-safe via job queue.</p>
+      </div>
+      <div class="stack-card">
+        <h4>AI layer (Pro)</h4>
+        <p>Claude API (claude-sonnet-4-20250514). Deals passed as context, AI returns ranked list + reasoning JSON.</p>
+      </div>
+      <div class="stack-card">
+        <h4>Email</h4>
+        <p>Resend (transactional) + React Email for digest templates. Magic link emails via Supabase Auth SMTP.</p>
+      </div>
+      <div class="stack-card">
+        <h4>Payments</h4>
+        <p>Stripe. Subscription webhooks update subscription status in DB. Stripe Customer Portal for self-service billing.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 07 REVENUE -->
+  <section id="revenue">
+    <div class="section-label">07 — Revenue projections</div>
+    <h2>12-month revenue model</h2>
+    <p>Conservative projections assuming organic growth only (no paid ads) and a realistic free-to-paid conversion rate of 8-12%.</p>
+    <table class="rev-table">
+      <thead><tr><th>Milestone</th><th>Free users</th><th>Basic subs</th><th>Pro subs</th><th>MRR</th></tr></thead>
+      <tbody>
+        <tr><td>Month 1</td><td>200</td><td>12</td><td>3</td><td>$180</td></tr>
+        <tr><td>Month 2</td><td>450</td><td>28</td><td>8</td><td>$444</td></tr>
+        <tr><td>Month 3</td><td>800</td><td>55</td><td>16</td><td>$879</td></tr>
+        <tr><td>Month 6</td><td>2,200</td><td>160</td><td>48</td><td>$2,592</td></tr>
+        <tr><td>Month 9</td><td>4,500</td><td>320</td><td>100</td><td>$5,280</td></tr>
+        <tr><td>Month 12</td><td>8,000</td><td>550</td><td>180</td><td>$9,270</td></tr>
+      </tbody>
+    </table>
+    <div class="callout-accent">
+      <p>Break-even (infra + AI API costs ~$200-400/mo) is achievable by month 2 with minimal user volume. This is a genuinely low-cost-to-run micro SaaS.</p>
+    </div>
+    <h3>Key assumptions</h3>
+    <p>Free-to-Basic conversion: 7-8%. Basic-to-Pro conversion: 25-30%. Monthly churn: 5% Basic, 3% Pro. API costs: ~$0.02/user/week at scale. AI cost (Pro): ~$0.10/digest generation via Claude API.</p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 08 GTM -->
+  <section id="gtm">
+    <div class="section-label">08 — Go-to-market</div>
+    <h2>Go-to-market strategy</h2>
+    <h3>Phase 1: content and community (months 1-3)</h3>
+    <p>Post in r/solotravel, r/digitalnomad, r/backpacking, and travel-focused Facebook groups. Frame posts as "I built a tool that sends you filtered hotel and flight deals for your upcoming trip." Share the free tier link. These communities are highly receptive to genuine tools built by solo developers.</p>
+    <h3>Phase 2: SEO (months 2-6)</h3>
+    <p>Target long-tail keywords: "cheap hostels Istanbul October," "budget flights Tunis Cairo." Create a blog section on triplyy.app publishing destination-specific deal roundups weekly. These rank well and funnel readers to the free intake form.</p>
+    <h3>Phase 3: partnerships (months 4+)</h3>
+    <p>Reach out to travel YouTubers and travel bloggers in the budget/backpacker niche for affiliate partnerships. Offer them a % of subscription revenue for referrals. A single mid-size travel creator mention can generate hundreds of free signups.</p>
+    <div class="callout">
+      <p>The product is its own best marketing tool. Every free digest email that lands in someone's inbox is a marketing touchpoint. Making those digests genuinely good is the best growth strategy.</p>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 09 RISKS -->
+  <section id="risks">
+    <div class="section-label">09 — Risks and mitigations</div>
+    <h2>Key risks</h2>
+    <div class="risk-row">
+      <div class="risk-pill risk-high">High</div>
+      <div class="risk-body"><strong>Travel API rate limits and costs</strong><span>Amadeus and Booking.com APIs have rate limits and usage quotas. A large user base can quickly exhaust free tiers. Mitigation: use BullMQ job queue to batch requests, cache results for 4-6 hours, and only fetch fresh data within 48 hours of a digest send.</span></div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-pill risk-high">High</div>
+      <div class="risk-body"><strong>Email deliverability</strong><span>Digest emails going to spam destroys the product's core value. Mitigation: use Resend (built for transactional email), authenticate the domain with SPF/DKIM/DMARC, and warm up the sending domain gradually. Include a clear unsubscribe link in every email.</span></div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-pill risk-med">Medium</div>
+      <div class="risk-body"><strong>Low free-to-paid conversion</strong><span>If the free digest is not compelling enough, paid conversion will be poor. Mitigation: A/B test digest format and deal selection logic. Ensure the free digest shows genuinely good deals, not leftover inventory.</span></div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-pill risk-med">Medium</div>
+      <div class="risk-body"><strong>AI cost at scale (Pro tier)</strong><span>If Pro AI reasoning is called too frequently, Claude API costs can erode margins. Mitigation: cache AI reasoning results per digest run (don't re-run AI on every page load). Cap on-demand refreshes at 3/day per user.</span></div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-pill risk-low">Low</div>
+      <div class="risk-body"><strong>Competition from large players</strong><span>Google Flights and Booking.com could theoretically add digest features. However, they are not incentivized to remove users from their platforms. Triplyy's advantage is personalization depth and email-first delivery, not raw data access.</span></div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 10 ROADMAP -->
+  <section id="roadmap">
+    <div class="section-label">10 — Product roadmap</div>
+    <h2>Launch roadmap</h2>
+    <div class="roadmap">
+      <div class="rm-card">
+        <div class="rm-phase rm-ph1">Phase 1 — Weeks 1-4</div>
+        <h4>MVP</h4>
+        <ul>
+          <li>Landing page + intake form</li>
+          <li>Magic link auth (Supabase)</li>
+          <li>Free digest generation</li>
+          <li>Stripe Basic subscription</li>
+          <li>Basic dashboard (trip list)</li>
+          <li>Amadeus flight API</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-phase rm-ph2">Phase 2 — Weeks 5-8</div>
+        <h4>Growth</h4>
+        <ul>
+          <li>Hotel/hostel API (Booking.com)</li>
+          <li>Weekly digest scheduler (BullMQ)</li>
+          <li>Digest email templates (React Email)</li>
+          <li>Free-user upgrade teaser page</li>
+          <li>Pro tier + Stripe upgrade flow</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-phase rm-ph3">Phase 3 — Weeks 9-12</div>
+        <h4>AI layer</h4>
+        <ul>
+          <li>Travel style questionnaire</li>
+          <li>Claude API integration for Pro</li>
+          <li>AI-ranked deals + reasoning</li>
+          <li>On-demand refresh button</li>
+          <li>Multi-trip comparison view</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-phase rm-ph4">Phase 4 — Month 4+</div>
+        <h4>Scale</h4>
+        <ul>
+          <li>SEO blog section</li>
+          <li>Affiliate partner program</li>
+          <li>Mobile-optimized dashboard</li>
+          <li>Annual billing option</li>
+          <li>Deal alerts (price drops)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:1.5rem">
+      <p>Target: paying subscribers by week 5 (end of Phase 1). Full AI-powered product by week 12. This is a 3-month build for a solo fullstack developer at full-time pace, or 5-6 months part-time.</p>
+    </div>
+  </section>
+
+</div>
