@@ -24,6 +24,8 @@
         "ALLOWED_ORIGINS",
         "SUPABASE_EMAIL_REDIRECT_URL",
         "SUPABASE_RESET_REDIRECT_URL"
+        ,
+        "CRON_SECRET"
       ],
       "dependsOn": [
         "^build"

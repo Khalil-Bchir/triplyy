@@ -5,7 +5,7 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { ApiError } from "@/features/auth/services/auth-service"
 import { strings } from "@/lib/strings"
 import { useAuth } from "@/features/auth/hooks/use-auth"
@@ -16,9 +16,8 @@ import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { getPostAuthRedirectPath } from "@/features/auth/utils/post-auth-redirect"
 import { useAuthStore } from "@/store/auth-store"
-import { useEffect } from "react"
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [email, setEmail] = useState("")
   const [emailError, setEmailError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -275,5 +274,19 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background p-6">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   )
 }
